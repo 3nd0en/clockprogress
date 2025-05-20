@@ -107,7 +107,7 @@
       timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
 
       const totalSec = ss + ms / 1000;
-      const percentSec = (totalSec / 60) * 100;
+      const percentSec = (totalSec / 120) * 100;
       progressSec.style.width = `${percentSec}%`;
 
       const totalMin = mm + ss / 60;
