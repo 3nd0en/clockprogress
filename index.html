@@ -7,20 +7,20 @@
   <link rel="icon" href="Dev_dark.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root {
+    :root { /* dark mode */
       --bg-color: #1e1e1e;
-      --text-color: #eee;
-      --bar-bg: #383838;
-      --bar-fill: #b16767;
-      --bar-fill-min: #4b7a99;
+      --text-color: #eeeeee;
+      --bar-bg: #464646;
+      --bar-fill: #eeeeee;
+      --bar-fill-min: #eeeeee;
     }
 
     body.light-mode {
       --bg-color: #eeeeee;
-      --text-color: #000000;
-      --bar-bg: #aaaaaa;
-      --bar-fill: #721a1a;
-      --bar-fill-min: #15425f;
+      --text-color: #1e1e1e;
+      --bar-bg: #afafaf;
+      --bar-fill: #1e1e1e;
+      --bar-fill-min: #1e1e1e;
     }
 
     body {
@@ -71,8 +71,8 @@
 
     #logo {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 30px;
+      right: 30px;
       max-height: 60px;
       cursor: pointer;
       z-index: 500;
@@ -91,6 +91,10 @@
   </div>
 
   <img id="logo" src="Dev_dark.png" alt="ロゴ" />
+
+  <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); font-size: 1.1rem; z-index: 1000;">
+    © 2025 LIZ Development. All rights reserved.
+  </div>
 
   <script>
     const timeDisplay = document.getElementById('timeDisplay');
