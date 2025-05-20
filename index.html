@@ -9,10 +9,10 @@
   <style>
     :root { /* dark mode */
       --bg-color: #1e1e1e;
-      --text-color: #eee;
-      --bar-bg: #444;
-      --bar-fill: #e74c3c;
-      --bar-fill-min: #3498db;
+      --text-color: #eeeeee;
+      --bar-bg: #464646;
+      --bar-fill: #eeeeee;
+      --bar-fill-min: #eeeeee;
     }
 
     body.light-mode {
@@ -71,9 +71,9 @@
 
     #logo {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      max-height: 60px;
+      top: 30px;
+      right: 60px;
+      max-height: 120px;
       cursor: pointer;
       z-index: 500;
     }
@@ -94,7 +94,15 @@
   <img id="logo" src="logo_dark.png" alt="ロゴ" title="テーマ切り替え" />
 
   <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); font-size: 1.1rem; z-index: 1000;">
+    <center>
+      in <font color="red">BETA</font> ver 1.2.0<br>問題が発生した場合は
+      <a href="https://github.com/3nd0en/clockprogress/issues" target="_blank" style="color: var(--text-color); text-decoration: underline;">
+      こちら
+      </a>
+    よりissueを追加してください
+    <br><br>
     © 2025 LIZ Development. All rights reserved.
+    </center>
   </div>
 
   <script>
@@ -141,7 +149,7 @@
     });
 
     updateClock();
-    setInterval(updateClock, 100);
+    setInterval(updateClock, 20);
   </script>
 </body>
 </html>
