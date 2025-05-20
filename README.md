@@ -7,8 +7,8 @@ HTMLファイルを開くことで利用できる<br>
 もしくは、後述のサイトにアクセスする
 
 ### 公開サイト
-安定版: [https://3nd0en.github.io/clockprogress/](https://3nd0en.github.io/clockprogress/) 
-β版: [https://clockprogress.netlify.app/](https://clockprogress.netlify.app/)
+安定版: <a href="https://3nd0en.github.io/clockprogress/" target="_blank" rel="noopener">https://3nd0en.github.io/clockprogress/</a>  
+β版: <a href="https://clockprogress.netlify.app/" target="_blank" rel="noopener">https://clockprogress.netlify.app/</a>
 
 ### 機能
 右上のロゴをクリックすることでライト/ダーク モードを切り替える<br>
