@@ -126,11 +126,6 @@
     let lastSecond = new Date().getSeconds();
     let isLightMode = false;
 
-    function flashScreen() {
-      flash.classList.add('flash-active');
-      setTimeout(() => flash.classList.remove('flash-active'), 2000);
-    }
-
     function updateClock() {
       const now = new Date();
       const hh = String(now.getHours()).padStart(2, '0');
@@ -148,9 +143,6 @@
       const percentMin = (totalMin / 60) * 100;
       progressMin.style.width = `${percentMin}%`;
 
-      if (ss === 0 && lastSecond !== 0) {
-        flashScreen();
-      }
       lastSecond = ss;
     }
 
