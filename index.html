@@ -10,14 +10,17 @@
     :root {
       --bg-color: #1e1e1e;
       --text-color: #eee;
-      --bar-bg: #444;
-      --bar-fill: #b64747;
-      --bar-fill-min: #20618b;
+      --bar-bg: #383838;
+      --bar-fill: #b16767;
+      --bar-fill-min: #4b7a99;
     }
 
     body.light-mode {
       --bg-color: #eeeeee;
       --text-color: #000000;
+      --bar-bg: #aaaaaa;
+      --bar-fill: #721a1a;
+      --bar-fill-min: #15425f;
     }
 
     body {
@@ -68,7 +71,7 @@
 
     #logo {
       position: absolute;
-      top: 10px;
+      top: 20px;
       right: 20px;
       max-height: 60px;
       cursor: pointer;
@@ -133,7 +136,7 @@
     });
 
     updateClock();
-    setInterval(updateClock, 100);
+    setInterval(updateClock, 20);
   </script>
 </body>
 </html>
