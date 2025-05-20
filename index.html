@@ -39,13 +39,14 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 7.111rem;
       margin-bottom: 20px;
+      cursor: pointer;
     }
 
     .progress-bar {
       position: relative;
       width: 45%;
       max-width: 800px;
-      height: 15px; 
+      height: 15px;
       background: var(--bar-bg);
       border-radius: 4px;
       overflow: hidden;
@@ -76,7 +77,7 @@
   </style>
 </head>
 <body>
-  <div class="time-display" id="timeDisplay">00:00:00</div>
+  <div class="time-display" id="timeDisplay" title="Click to toggle fullscreen">00:00:00</div>
 
   <div class="progress-bar">
     <div class="progress" id="progressSec"></div>
@@ -114,6 +115,16 @@
       progressMin.style.width = `${percentMin}%`;
       lastSecond = ss;
     }
+
+    timeDisplay.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn(`Error attempting to enable fullscreen mode: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
 
     logo.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
