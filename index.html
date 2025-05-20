@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LIZ Clock</title>
-  <link rel="icon" href="Dev_dark.png" type="image/png" />
+  <link rel="icon" href="dev_dark.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root { /* dark mode */
@@ -96,8 +96,9 @@
     }
   </style>
 </head>
+
 <body>
-  <div class="time-display" id="timeDisplay" title="Click to toggle fullscreen">00:00:00</div>
+  <div class="time-display" id="timeDisplay" title="全画面モード切り替え">00:00:00</div>
 
   <div class="progress-bar">
     <div class="progress" id="progressSec"></div>
@@ -107,11 +108,13 @@
     <div class="progress min" id="progressMin"></div>
   </div>
 
+  <img id="logo" src="dev_dark.png" alt="ロゴ" title="テーマ切り替え" />
   <div id="flash"></div>
   <img id="logo" src="Dev_dark.png" alt="ロゴ" />
 
   <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); font-size: 1.1rem; z-index: 1000;">
     © 2025 LIZ Development. All rights reserved.
+    </center>
   </div>
 
   <script>
@@ -154,7 +157,7 @@
     timeDisplay.addEventListener('click', () => {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
-          console.warn(`Error attempting to enable fullscreen mode: ${err.message}`);
+          console.warn(`全画面モードの切り替えに失敗しました: ${err.message}`);
         });
       } else {
         document.exitFullscreen();
@@ -164,7 +167,7 @@
     logo.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
       isLightMode = !isLightMode;
-      logo.src = isLightMode ? 'Dev_light.png' : 'Dev_dark.png';
+      logo.src = isLightMode ? 'dev_light.png' : 'dev_dark.png';
     });
 
     updateClock();
