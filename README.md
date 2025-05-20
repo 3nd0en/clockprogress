@@ -1,10 +1,10 @@
-# liz_clock
+# ClockProgress
 時間経過を可視化したスタンドアロンの時計
 
 ## インストール / 利用方法
 ZIPファイルをダウンロードし、好みなディレクトリに展開する<br>
 HTMLファイルを開くことで利用できる<br>
-もしくは、[https://3nd0en.github.io/liz_clock/](https://3nd0en.github.io/liz_clock/) にアクセスする
+もしくは、[https://3nd0en.github.io/clockprogress/](https://3nd0en.github.io/clockprogress/) にアクセスする
 
 ## 機能
 右上のロゴをクリックすることでライト/ダーク モードを切り替える<br>
