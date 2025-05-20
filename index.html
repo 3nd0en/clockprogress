@@ -69,23 +69,6 @@
       background: var(--bar-fill-min);
     }
 
-    #flash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: var(--flash-color);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 2s ease;
-      z-index: 999;
-    }
-
-    .flash-active {
-      opacity: 0.5;
-    }
-
     #logo {
       position: absolute;
       top: 30px;
@@ -109,19 +92,15 @@
   </div>
 
   <img id="logo" src="dev_dark.png" alt="ロゴ" title="テーマ切り替え" />
-  <div id="flash"></div>
-  <img id="logo" src="dev_dark.png" alt="ロゴ" />
 
   <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); font-size: 1.1rem; z-index: 1000;">
     © 2025 LIZ Development. All rights reserved.
-    </center>
   </div>
 
   <script>
     const timeDisplay = document.getElementById('timeDisplay');
     const progressSec = document.getElementById('progressSec');
     const progressMin = document.getElementById('progressMin');
-    const flash = document.getElementById('flash');
     const logo = document.getElementById('logo');
     let lastSecond = new Date().getSeconds();
     let isLightMode = false;
@@ -142,7 +121,6 @@
       const totalMin = mm + ss / 60;
       const percentMin = (totalMin / 60) * 100;
       progressMin.style.width = `${percentMin}%`;
-
       lastSecond = ss;
     }
 
