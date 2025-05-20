@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clock Progress</title>
-  <link rel="icon" href="dev_dark.png" type="image/png" />
+  <link rel="icon" href="logo_dark.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root { /* dark mode */
@@ -91,7 +91,7 @@
     <div class="progress min" id="progressMin"></div>
   </div>
 
-  <img id="logo" src="dev_dark.png" alt="ロゴ" title="テーマ切り替え" />
+  <img id="logo" src="logo_dark.png" alt="ロゴ" title="テーマ切り替え" />
 
   <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); font-size: 1.1rem; z-index: 1000;">
     <center>
@@ -145,7 +145,7 @@
     logo.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
       isLightMode = !isLightMode;
-      logo.src = isLightMode ? 'dev_light.png' : 'dev_dark.png';
+      logo.src = isLightMode ? 'logo_light.png' : 'logo_dark.png';
     });
 
     updateClock();
