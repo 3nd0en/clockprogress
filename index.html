@@ -12,6 +12,7 @@
       --text-color: #eee;
       --bar-bg: #444;
       --bar-fill: #e74c3c;
+      --bar-fill-min: #3498db;
       --flash-color: #fff;
     }
 
@@ -38,18 +39,18 @@
     .time-display {
       font-family: 'JetBrains Mono', monospace;
       font-size: 7.111rem;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .progress-bar {
       position: relative;
       width: 45%;
       max-width: 800px;
-      height: 30px;
+      height: 15px; 
       background: var(--bar-bg);
       border-radius: 4px;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       z-index: 1;
     }
 
@@ -59,6 +60,10 @@
       background: var(--bar-fill);
       transition: width 0.1s linear;
       z-index: 2;
+    }
+
+    .progress.min {
+      background: var(--bar-fill-min);
     }
 
     #flash {
@@ -90,15 +95,22 @@
 </head>
 <body>
   <div class="time-display" id="timeDisplay">00:00:00</div>
+
   <div class="progress-bar">
-    <div class="progress" id="progress"></div>
+    <div class="progress" id="progressSec"></div>
   </div>
+
+  <div class="progress-bar">
+    <div class="progress min" id="progressMin"></div>
+  </div>
+
   <div id="flash"></div>
   <img id="logo" src="Dev_dark.png" alt="ロゴ" />
 
   <script>
     const timeDisplay = document.getElementById('timeDisplay');
-    const progress = document.getElementById('progress');
+    const progressSec = document.getElementById('progressSec');
+    const progressMin = document.getElementById('progressMin');
     const flash = document.getElementById('flash');
     const logo = document.getElementById('logo');
     let lastSecond = new Date().getSeconds();
@@ -112,15 +124,19 @@
     function updateClock() {
       const now = new Date();
       const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
+      const mm = now.getMinutes();
       const ss = now.getSeconds();
       const ms = now.getMilliseconds();
 
-      timeDisplay.textContent = `${hh}:${mm}:${String(ss).padStart(2, '0')}`;
+      timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
 
       const totalSec = ss + ms / 1000;
-      const percent = (totalSec / 60) * 100;
-      progress.style.width = `${percent}%`;
+      const percentSec = (totalSec / 60) * 100;
+      progressSec.style.width = `${percentSec}%`;
+
+      const totalMin = mm + ss / 60;
+      const percentMin = (totalMin / 60) * 100;
+      progressMin.style.width = `${percentMin}%`;
 
       if (ss === 0 && lastSecond !== 0) {
         flashScreen();
