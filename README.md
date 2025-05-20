@@ -4,7 +4,7 @@
 ## インストール / 利用方法
 ZIPファイルをダウンロードし、好みなディレクトリに展開する<br>
 HTMLファイルを開くことで利用できる<br>
-もしくは、[https://3nd0en.github.io/liz_clock/](https://3nd0en.github.io/liz_clock/) にアクセスする
+もしくは、<a href="[URL](https://3nd0en.github.io/liz_clock/)" target="_blank" rel="noopener noreferrer">https://3nd0en.github.io/liz_clock/</a> にアクセスする
 
 ## 機能
 右上のロゴをクリックすることでライト/ダーク モードを切り替える<br>
