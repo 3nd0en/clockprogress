@@ -40,6 +40,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 7.111rem;
       margin-bottom: 20px;
+      cursor: pointer;
     }
 
     .progress-bar {
@@ -91,6 +92,25 @@
       cursor: pointer;
       z-index: 500;
     }
+
+    #readme-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 100;
+      transition: background-color 0.3s ease;
+    }
+
+    #readme-btn:hover {
+      background-color: #c0392b;
+    }
   </style>
 </head>
 <body>
@@ -107,12 +127,15 @@
   <div id="flash"></div>
   <img id="logo" src="Dev_dark.png" alt="ロゴ" />
 
+  <button id="readme-btn">README</button>
+
   <script>
     const timeDisplay = document.getElementById('timeDisplay');
     const progressSec = document.getElementById('progressSec');
     const progressMin = document.getElementById('progressMin');
     const flash = document.getElementById('flash');
     const logo = document.getElementById('logo');
+    const readmeBtn = document.getElementById('readme-btn');
     let lastSecond = new Date().getSeconds();
     let isLightMode = false;
 
@@ -148,6 +171,18 @@
       document.body.classList.toggle('light-mode');
       isLightMode = !isLightMode;
       logo.src = isLightMode ? 'Dev_light.png' : 'Dev_dark.png';
+    });
+
+    timeDisplay.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    readmeBtn.addEventListener('click', () => {
+      window.open('https://github.com/3nd0en/liz_clock/blob/main/README.md', '_blank');
     });
 
     updateClock();
