@@ -113,6 +113,20 @@
     let lastSecond = new Date().getSeconds();
     let isLightMode = false;
 
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:1.5rem;color:#f55;background:#222;">モバイルデバイスからのアクセスはサポートされていません。</div>';
+    throw new Error('Mobile access denied');
+  }
+
+  const timeDisplay = document.getElementById('timeDisplay');
+  const progressSec = document.getElementById('progressSec');
+  const progressMin = document.getElementById('progressMin');
+  const logo = document.getElementById('logo');
+  let lastSecond = new Date().getSeconds();
+  let isLightMode = false;
+
+  function updateClock() {
+
     function updateClock() {
       const now = new Date();
       const hh = String(now.getHours()).padStart(2, '0');
