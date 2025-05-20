@@ -4,7 +4,7 @@
 ### インストール / 利用方法
 ZIPファイルをダウンロードし、好みなディレクトリに展開する<br>
 HTMLファイルを開くことで利用できる<br>
-もしくは、後述のサイトにアクセスする
+もしくは、後述のサイトにアクセスすることでも利用可能
 
 ### 公開サイト
 安定版: <a href="https://3nd0en.github.io/clockprogress/" target="_blank" rel="noopener">https://3nd0en.github.io/clockprogress/</a><br>
