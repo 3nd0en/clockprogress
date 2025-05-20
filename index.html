@@ -9,10 +9,10 @@
   <style>
     :root { /* dark mode */
       --bg-color: #1e1e1e;
-      --text-color: #eeeeee;
-      --bar-bg: #464646;
-      --bar-fill: #eeeeee;
-      --bar-fill-min: #eeeeee;
+      --text-color: #eee;
+      --bar-bg: #444;
+      --bar-fill: #e74c3c;
+      --bar-fill-min: #3498db;
     }
 
     body.light-mode {
@@ -138,7 +138,7 @@
       timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
 
       const totalSec = ss + ms / 1000;
-      const percentSec = (totalSec / 240) * 100;
+      const percentSec = (totalSec / 60) * 100;
       progressSec.style.width = `${percentSec}%`;
 
       const totalMin = mm + ss / 60;
@@ -168,7 +168,7 @@
     });
 
     updateClock();
-    setInterval(updateClock, 20);
+    setInterval(updateClock, 100);
   </script>
 </body>
 </html>
