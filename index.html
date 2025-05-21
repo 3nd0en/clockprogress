@@ -77,13 +77,13 @@
       cursor: pointer;
       z-index: 500;
     }
-    
+
     @media screen and (max-width: 768px) {
       #timeDisplay {
         -webkit-text-size-adjust: 100%;
         font-size: 30vh;
       }
-      #footer {
+      #beta {
 /*        font-size: none !important; */
         -webkit-text-size-adjust: 100%;
         font-size: 0%;
@@ -118,21 +118,19 @@
 
   <center>
 
-    <div id="footer" style="position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
+    <div id="beta" style="position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
       in <font color="red">BETA</font> ver 1.2.0 | 
       <a href="https://github.com/3nd0en/clockprogress/issues" target="_blank" style="color: var(--text-color); text-decoration: underline;">
       issue
       </a>
     </div>
-<!---
     <div id="cp" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
     © 2025 LIZ Development. All rights reserved.
-    </div>
+    </div> <!---
         <div id="cpm" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
     © 2025 LIZ Development.
     </div> -->
   </center>
-
 
   <script>
     function adjustFontSize() {
