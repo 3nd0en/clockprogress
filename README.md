@@ -7,7 +7,7 @@ HTMLファイルを開くことで利用できる<br>
 もしくは、後述のサイトにアクセスすることでも利用可能
 
 ### 公開サイト
-安定版: <a href="https://LIZ-Development.github.io/clockprogress/" target="_blank" rel="noopener">https://3nd0en.github.io/clockprogress/</a><br>
+安定版: <a href="https://LIZ-Development.github.io/clockprogress/" target="_blank" rel="noopener">https://LIZ-Development.github.io/clockprogress/</a><br>
 β版: <a href="https://clockprogress.netlify.app/" target="_blank" rel="noopener">https://clockprogress.netlify.app/</a>
 
 ### 機能
