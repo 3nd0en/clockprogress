@@ -86,6 +86,10 @@
 */
 
     @media screen and (max-width: 768px) {
+      #timeDisplay {
+        -webkit-text-size-adjust: 100%;
+        font-size: 10.0rem;
+      }
       #footer {
 /*        font-size: none !important; */
         -webkit-text-size-adjust: 100%;
@@ -114,7 +118,7 @@
 </head>
 
 <body>
-  <div class="time-display" id="timeDisplay" font-size: 10.0rem; title="全画面モード切り替え">00:00:00</div>
+  <div class="time-display" id="timeDisplay" title="全画面モード切り替え">00:00:00</div>
 
   <div class="progress-bar" id="progressBarSec">
     <div class="progress" id="progressSec"></div>
