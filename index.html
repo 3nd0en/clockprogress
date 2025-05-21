@@ -95,7 +95,17 @@
         -webkit-text-size-adjust: 100%;
         font-size: 0%;
       }
-    } /*
+      #cp {
+        display: none !important;
+      }
+    } 
+    @media (min-width: 769px) {
+      #cpm {
+        display: none !important;
+      }
+    }  
+    
+    /*
     @media screen and (min-width: 768px) and (max-width: 1024px) {
       #footer {
         font-size: clamp(1.2rem, calc(0.25vw + 1.3rem), 1.8rem);
@@ -130,17 +140,22 @@
 
   <img id="logo" src="logo_dark.png" alt="ロゴ" title="テーマ切り替え" />
 
-  <div id="footer" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
-    <center>
+  <center>
+  <div id="footer" style="position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
       in <font color="red">BETA</font> ver 1.2.0<br>問題が発生した場合は
       <a href="https://github.com/3nd0en/clockprogress/issues" target="_blank" style="color: var(--text-color); text-decoration: underline;">
       こちら
       </a>
     よりissueを追加してください
-    <br><br>
+    </div>
+    <div id="cp" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
     © 2025 LIZ Development. All rights reserved.
-    </center>
-  </div>
+    </div>
+        <div id="cpm" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
+    © 2025 LIZ Development.
+    </div>
+  </center>
+
 
   <script>
     function adjustFontSize() {
