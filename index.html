@@ -77,10 +77,16 @@
       cursor: pointer;
       z-index: 500;
     }
-
+/*
     @media (max-height: 768px) {
       #footer {
         font-size: none !important;
+      }
+    }
+*/
+    @media (orientation: landscape) and (max-height: 600px) {
+      #footer {
+        display: none !important;
       }
     }
   </style>
