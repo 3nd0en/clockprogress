@@ -133,6 +133,12 @@
   </center>
 
   <script>
+
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:1.5rem;color:#f55;background:#222;text-align:center;">このサイトはモバイル・タブレット等の<br>レスポンシブ表示に対応していません。<br>PCからご利用ください。</div>';
+      throw new Error('本サイトはレスポンシブ表示に対応していません。PCからご利用いただくかデスクトップ用Webサイトの要求などをご利用ください');
+    }
+
     function adjustFontSize() {
       const progressBar = document.getElementById('progressBarSec');
       const timeDisplay = document.getElementById('timeDisplay');
