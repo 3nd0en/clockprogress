@@ -7,7 +7,7 @@
   <link rel="icon" href="logo_dark.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root { /* dark mode */
+    :root { 
       --bg-color: #1e1e1e;
       --text-color: #eeeeee;
       --bar-bg: #464646;
@@ -40,14 +40,13 @@
 
     .time-display {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 7.111rem;
       margin-bottom: 20px;
       cursor: pointer;
     }
 
     .progress-bar {
       position: relative;
-      width: 45%;
+      width: 50vw;
       max-width: 800px;
       height: 15px;
       background: var(--bar-bg);
@@ -55,6 +54,7 @@
       overflow: hidden;
       margin-bottom: 10px;
       z-index: 1;
+      min-width: 120px;
     }
 
     .progress {
@@ -83,11 +83,11 @@
 <body>
   <div class="time-display" id="timeDisplay" title="全画面モード切り替え">00:00:00</div>
 
-  <div class="progress-bar">
+  <div class="progress-bar" id="progressBarSec">
     <div class="progress" id="progressSec"></div>
   </div>
 
-  <div class="progress-bar">
+  <div class="progress-bar" id="progressBarMin">
     <div class="progress min" id="progressMin"></div>
   </div>
 
@@ -107,14 +107,26 @@
 
   <script>
     function adjustFontSize() {
-    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    let baseSize = Math.max(3, Math.min(10, vw / 160));
-    const isPC = !('ontouchstart' in window) && vw >= 768;
-    if (isPC) {
-      baseSize = baseSize / 2;
+      const progressBar = document.getElementById('progressBarSec');
+      const timeDisplay = document.getElementById('timeDisplay');
+      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+
+      const barWidth = Math.min(vw * 0.5, 800);
+
+      const isPC = !('ontouchstart' in window) && vw >= 768;
+
+      let fontSize;
+      if (isPC) {
+        fontSize = barWidth / 4;
+      } else {
+        fontSize = barWidth; 
+      }
+      fontSize = Math.max(32, Math.min(fontSize, 200));
+      timeDisplay.style.fontSize = fontSize + 'px';
     }
-    document.getElementById('timeDisplay').style.fontSize = baseSize + 'rem';
-    }
+
+    window.addEventListener('resize', adjustFontSize);
+    window.addEventListener('orientationchange', adjustFontSize);
 
     const timeDisplay = document.getElementById('timeDisplay');
     const progressSec = document.getElementById('progressSec');
@@ -158,6 +170,7 @@
       logo.src = isLightMode ? 'logo_light.png' : 'logo_dark.png';
     });
 
+    adjustFontSize();
     updateClock();
     setInterval(updateClock, 20);
   </script>
