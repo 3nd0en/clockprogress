@@ -103,30 +103,26 @@
         -webkit-text-size-adjust: 100%;
         font-size: 30vh;
       }
-      #beta {
-/*        font-size: none !important; */
-        -webkit-text-size-adjust: 100%;
-        font-size: 0%;
-      }
       #cp {
         display: none !important;
-      } 
+      }
       #cpm {
         font-size: 0.7em !important;
-      } 
-    } 
-     @media (min-width: 769px) {
-      #cpm {
-        display: none !important;
-      }
-    } 
-    @media (min-width: 769px) {
-      #beta, #cp {
-        font-size: 1.5em !important;
       }
     }
 
-    </style>
+    @media (min-width: 769px) {
+      #cpm {
+        display: none !important;
+      }
+    }
+
+    @media (min-width: 769px) {
+      #cp {
+        font-size: 1.5em !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -144,14 +140,6 @@
   <img id="logo" src="darkmode.png" alt="ロゴ" title="テーマ切り替え" />
 
   <center>
-
-    <div id="beta" style="position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
-      in <font color="red">BETA</font> ver 1.2.0 | 
-      <a href="https://github.com/3nd0en/clockprogress/issues" target="_blank" style="color: var(--text-color); text-decoration: underline;">
-      issue
-      </a>
-    </div>
-    
     <div id="cp" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000; display: flex; align-items: center; gap: 0.5em;">
       © 2025 | <img id="lizLogo" src="logo_dark.png" alt="LIZ Logo" style="height: 1em; vertical-align: middle;">LIZ Development | All rights reserved.
     </div>
@@ -240,12 +228,12 @@
     }
     logo.addEventListener('click', updateLizLogo);
 
-//  ------------------------
+    //  ------------------------
     adjustFontSize();
     updateClock();
     setInterval(updateClock, 20);
     updateLizLogo();
-//  ------------------------
+    //  ------------------------
 
     function getDayString(day) {
       const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -259,7 +247,6 @@
       const ss = now.getSeconds();
       const ms = now.getMilliseconds();
 
-      // 日付表示
       const yyyy = now.getFullYear();
       const MM = String(now.getMonth() + 1).padStart(2, '0');
       const dd = String(now.getDate()).padStart(2, '0');
@@ -268,10 +255,8 @@
       const timeDisplay = document.getElementById('timeDisplay');
       dateDisplay.textContent = `${yyyy}/${MM}/${dd}(${day})`;
 
-      // 時計
       timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
 
-      // プログレスバー
       const totalSec = ss + ms / 1000;
       const percentSec = (totalSec / 60) * 100;
       progressSec.style.width = `${percentSec}%`;
@@ -281,12 +266,10 @@
       progressMin.style.width = `${percentMin}%`;
       lastSecond = ss;
 
-      // 日付のフォントサイズ調整
       if (timeDisplay) {
         dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
       }
     }
-
   </script>
 </body>
 </html>
