@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
   <title>Clock Progress</title>
-  <link rel="icon" href="darkmode.png" type="image/png" />
+  <link rel="icon" href="logo_dark.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root { 
@@ -71,11 +71,11 @@
 
     #logo {
       position: absolute;
-      top: calc(100vw / 40);   /* 画面幅の1/40を上マージンに */
-      right: calc(100vw / 40); /* 画面幅の1/40を右マージンに */
-      height: calc(100vw / 15);
+      top: calc(100vw / 40);
+      right: calc(100vw / 40);
+      height: calc(100vw / 18);
       width: auto;
-      max-height: 120px;
+      max-height: 80px;
       cursor: pointer;
       z-index: 500;
     }
@@ -130,6 +130,7 @@
 </head>
 
 <body>
+  <div id="dateDisplay" style="font-family: 'JetBrains Mono', monospace; margin-bottom: 5px;"></div>
   <div class="time-display" id="timeDisplay" title="全画面モード切り替え">00:00:00</div>
 
   <div class="progress-bar" id="progressBarSec">
@@ -245,6 +246,47 @@
     setInterval(updateClock, 20);
     updateLizLogo();
 //  ------------------------
+
+    function getDayString(day) {
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      return days[day];
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = now.getMinutes();
+      const ss = now.getSeconds();
+      const ms = now.getMilliseconds();
+
+      // 日付表示
+      const yyyy = now.getFullYear();
+      const MM = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const day = getDayString(now.getDay());
+      const dateDisplay = document.getElementById('dateDisplay');
+      const timeDisplay = document.getElementById('timeDisplay');
+      dateDisplay.textContent = `${yyyy}/${MM}/${dd}(${day})`;
+
+      // 時計
+      timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
+
+      // プログレスバー
+      const totalSec = ss + ms / 1000;
+      const percentSec = (totalSec / 60) * 100;
+      progressSec.style.width = `${percentSec}%`;
+
+      const totalMin = mm + ss / 60;
+      const percentMin = (totalMin / 60) * 100;
+      progressMin.style.width = `${percentMin}%`;
+      lastSecond = ss;
+
+      // 日付のフォントサイズ調整
+      if (timeDisplay) {
+        dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
+      }
+    }
+
   </script>
 </body>
 </html>
