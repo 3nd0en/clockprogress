@@ -2,12 +2,12 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
   <title>Clock Progress</title>
   <link rel="icon" href="logo_dark.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root { /* dark mode */
+    :root { 
       --bg-color: #1e1e1e;
       --text-color: #eeeeee;
       --bar-bg: #464646;
@@ -40,14 +40,13 @@
 
     .time-display {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 7.111rem;
       margin-bottom: 20px;
       cursor: pointer;
     }
 
     .progress-bar {
       position: relative;
-      width: 45%;
+      width: 50vw;
       max-width: 800px;
       height: 15px;
       background: var(--bar-bg);
@@ -55,6 +54,7 @@
       overflow: hidden;
       margin-bottom: 10px;
       z-index: 1;
+      min-width: 120px;
     }
 
     .progress {
@@ -71,33 +71,123 @@
 
     #logo {
       position: absolute;
-      top: 30px;
-      right: 60px;
-      max-height: 120px;
+      top: calc(100vw / 40);
+      right: calc(100vw / 40);
+      height: calc(100vw / 18);
+      width: auto;
+      max-height: 80px;
       cursor: pointer;
       z-index: 500;
     }
-  </style>
+
+    @media screen and (max-width: 768px) and (orientation: portrait) { /* 縦 */
+      #logo {
+        top: calc(100vw / 10);
+        right: calc(100vw / 15);
+        height: calc(100vw / 9);
+        max-height: 80px;
+      }
+    }
+
+    @media screen and (max-width: 768px) and (orientation: landscape) { /* 横 */
+      #logo {
+        top: calc(100vw / 20);
+        right: calc(100vw / 40);
+        height: calc(100vw / 15);
+        max-height: 80px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      #timeDisplay {
+        -webkit-text-size-adjust: 100%;
+        font-size: 30vh;
+      }
+      #beta {
+/*        font-size: none !important; */
+        -webkit-text-size-adjust: 100%;
+        font-size: 0%;
+      }
+      #cp {
+        display: none !important;
+      } 
+      #cpm {
+        font-size: 0.7em !important;
+      } 
+    } 
+     @media (min-width: 769px) {
+      #cpm {
+        display: none !important;
+      }
+    } 
+    @media (min-width: 769px) {
+      #beta, #cp {
+        font-size: 1.5em !important;
+      }
+    }
+
+    </style>
 </head>
 
 <body>
+  <div id="dateDisplay" style="font-family: 'JetBrains Mono', monospace; margin-bottom: 5px;"></div>
   <div class="time-display" id="timeDisplay" title="全画面モード切り替え">00:00:00</div>
 
-  <div class="progress-bar">
+  <div class="progress-bar" id="progressBarSec">
     <div class="progress" id="progressSec"></div>
   </div>
 
-  <div class="progress-bar">
+  <div class="progress-bar" id="progressBarMin">
     <div class="progress min" id="progressMin"></div>
   </div>
 
-  <img id="logo" src="logo_dark.png" alt="ロゴ" title="テーマ切り替え" />
+  <img id="logo" src="darkmode.png" alt="ロゴ" title="テーマ切り替え" />
 
-  <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); font-size: 1.1rem; z-index: 1000;">
-    © 2025 LIZ Development. All rights reserved.
-  </div>
+  <center>
+
+    <div id="beta" style="position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
+      in <font color="red">BETA</font> ver 1.2.0 | 
+      <a href="https://github.com/3nd0en/clockprogress/issues" target="_blank" style="color: var(--text-color); text-decoration: underline;">
+      issue
+      </a>
+    </div>
+    
+    <div id="cp" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000; display: flex; align-items: center; gap: 0.5em;">
+      © 2025 | <img id="lizLogo" src="logo_dark.png" alt="LIZ Logo" style="height: 1em; vertical-align: middle;">LIZ Development | All rights reserved.
+    </div>
+    
+    <div id="cpm" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000; display: flex; align-items: center; gap: 0.5em;">
+      © 2025 | <img id="lizLogo" src="logo_dark.png" alt="LIZ Logo" style="height: 1em; vertical-align: middle;">LIZ Development.
+    </div>
+  </center>
 
   <script>
+    function adjustFontSize() {
+      const progressBar = document.getElementById('progressBarSec');
+      const timeDisplay = document.getElementById('timeDisplay');
+      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+      const barWidth = Math.min(vw * 0.5, 800);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+      const isPC = !('ontouchstart' in window) && vw >= 768;
+
+      let fontSize;
+      if (isPC) {
+        fontSize = barWidth / 7;
+      } else if (isMobile && isLandscape) {
+        fontSize = barWidth / 10;
+      } else if (isMobile) {
+        fontSize = barWidth / 14; // モバイル縦向きは半分のサイズ
+      } else {
+        fontSize = barWidth / 10;
+      }
+      fontSize = Math.max(32, Math.min(fontSize, 200));
+      timeDisplay.style.fontSize = fontSize + 'px';
+    }
+
+    window.addEventListener('resize', adjustFontSize);
+    window.addEventListener('orientationchange', adjustFontSize);
+
     const timeDisplay = document.getElementById('timeDisplay');
     const progressSec = document.getElementById('progressSec');
     const progressMin = document.getElementById('progressMin');
@@ -137,11 +227,66 @@
     logo.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
       isLightMode = !isLightMode;
-      logo.src = isLightMode ? 'logo_light.png' : 'logo_dark.png';
+      logo.src = isLightMode ? 'lightmode.png' : 'darkmode.png';
+      updateLizLogo();
     });
 
+    function updateLizLogo() {
+      const isLight = document.body.classList.contains('light-mode');
+      const lizLogos = document.querySelectorAll('#lizLogo, #lizLogoMobile');
+      lizLogos.forEach(el => {
+        el.src = isLight ? 'logo_light.png' : 'logo_dark.png';
+      });
+    }
+    logo.addEventListener('click', updateLizLogo);
+
+//  ------------------------
+    adjustFontSize();
     updateClock();
     setInterval(updateClock, 20);
+    updateLizLogo();
+//  ------------------------
+
+    function getDayString(day) {
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      return days[day];
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = now.getMinutes();
+      const ss = now.getSeconds();
+      const ms = now.getMilliseconds();
+
+      // 日付表示
+      const yyyy = now.getFullYear();
+      const MM = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const day = getDayString(now.getDay());
+      const dateDisplay = document.getElementById('dateDisplay');
+      const timeDisplay = document.getElementById('timeDisplay');
+      dateDisplay.textContent = `${yyyy}/${MM}/${dd}(${day})`;
+
+      // 時計
+      timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
+
+      // プログレスバー
+      const totalSec = ss + ms / 1000;
+      const percentSec = (totalSec / 60) * 100;
+      progressSec.style.width = `${percentSec}%`;
+
+      const totalMin = mm + ss / 60;
+      const percentMin = (totalMin / 60) * 100;
+      progressMin.style.width = `${percentMin}%`;
+      lastSecond = ss;
+
+      // 日付のフォントサイズ調整
+      if (timeDisplay) {
+        dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
+      }
+    }
+
   </script>
 </body>
 </html>
