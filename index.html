@@ -216,8 +216,16 @@
       }
       progressSec.style.width = `${percentSec}%`;
 
+      // 分のプログレスバーの更新
       const totalMin = mm + ss / 60;
-      const percentMin = (totalMin / 60) * 100;
+      let percentMin;
+      if (mm === 0 && ss === 0 && ms < 1000) {
+        // 0分の最初の1秒間は左から右へ移動
+        percentMin = (ms / 1000) * 100;
+      } else {
+        // それ以外は右から左へ移動
+        percentMin = 100 - ((totalMin / 60) * 100);
+      }
       progressMin.style.width = `${percentMin}%`;
       lastSecond = ss;
 
