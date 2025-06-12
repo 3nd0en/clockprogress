@@ -29,10 +29,9 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       background: var(--bg-color);
       margin: 0;
-      padding-bottom: 80px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: var(--text-color);
       overflow: hidden;
@@ -69,32 +68,66 @@
       background: var(--bar-fill-min);
     }
 
-    #logo {
+    .button-group {
       position: absolute;
       top: calc(100vw / 40);
       right: calc(100vw / 40);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 500;
+    }
+
+    #logo {
       height: calc(100vw / 18);
       width: auto;
       max-height: 80px;
       cursor: pointer;
-      z-index: 500;
     }
 
-    @media screen and (max-width: 768px) and (orientation: portrait) { /* 縦 */
-      #logo {
+    #soundToggle {
+      height: 73px;
+      width: 73px;
+      max-height: 73px;
+      max-width: 73px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      object-fit: contain;
+      margin-left: 5px;
+    }
+
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      .button-group {
         top: calc(100vw / 10);
         right: calc(100vw / 15);
+      }
+      #logo {
         height: calc(100vw / 9);
         max-height: 80px;
       }
+      #soundToggle {
+        height: 73px;
+        width: 73px;
+        max-height: 73px;
+        max-width: 73px;
+      }
     }
 
-    @media screen and (max-width: 768px) and (orientation: landscape) { /* 横 */
-      #logo {
+    @media screen and (max-width: 768px) and (orientation: landscape) {
+      .button-group {
         top: calc(100vw / 20);
         right: calc(100vw / 40);
+      }
+      #logo {
         height: calc(100vw / 15);
         max-height: 80px;
+      }
+      #soundToggle {
+        height: 73px;
+        width: 73px;
+        max-height: 73px;
+        max-width: 73px;
       }
     }
 
@@ -123,6 +156,9 @@
 </head>
 
 <body>
+  <audio id="minuteSound" preload="auto">
+    <source src="minute.mp3" type="audio/mpeg">
+  </audio>
   <div id="dateDisplay" style="font-family: 'JetBrains Mono', monospace; margin-bottom: 5px;"></div>
   <div class="time-display" id="timeDisplay" title="全画面モード切り替え">00:00:00</div>
 
@@ -134,14 +170,24 @@
     <div class="progress min" id="progressMin"></div>
   </div>
 
-  <img id="logo" src="darkmode.png" alt="ロゴ" title="テーマ切り替え" />
+  <div class="button-group">
+    <img id="logo" src="darkmode.png" alt="ロゴ" title="テーマ切り替え" />
+    <img id="soundToggle" src="sound_on.png" alt="時報切り替え" title="時報のオン・オフ" />
+  </div>
 
   <center>
-    <div id="cp" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000; display: flex; align-items: center; gap: 0.5em;">
+    <div id="beta" style="position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
+      in <font color="red">BETA</font> ver 1.2.0 | 
+      <a href="https://github.com/3nd0en/clockprogress/issues" target="_blank" style="color: var(--text-color); text-decoration: underline;">
+      issue
+      </a>
+    </div>
+    
+    <div id="cp" style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000; display: flex; align-items: center; gap: 0.5em;">
       © 2025   <img id="lizLogo" src="logo_dark.png" alt="LIZ Logo" style="height: 1em; vertical-align: middle;">LIZ Development. All rights reserved.
     </div>
     
-    <div id="cpm" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000; display: flex; align-items: center; gap: 0.5em;">
+    <div id="cpm" style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000; display: flex; align-items: center; gap: 0.5em;">
       © 2025   <img id="lizLogo" src="logo_dark.png" alt="LIZ Logo" style="height: 1em; vertical-align: middle;">LIZ Development.
     </div>
   </center>
@@ -177,8 +223,12 @@
     const progressSec = document.getElementById('progressSec');
     const progressMin = document.getElementById('progressMin');
     const logo = document.getElementById('logo');
+    const soundToggle = document.getElementById('soundToggle');
     let lastSecond = new Date().getSeconds();
+    let lastMinute = new Date().getMinutes();
     let isLightMode = false;
+    let isSoundEnabled = true;
+    const minuteSound = document.getElementById('minuteSound');
 
     function updateClock() {
       const now = new Date();
@@ -187,62 +237,16 @@
       const ss = now.getSeconds();
       const ms = now.getMilliseconds();
 
-      timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
-
-      const totalSec = ss + ms / 1000;
-      const percentSec = (totalSec / 60) * 100;
-      progressSec.style.width = `${percentSec}%`;
-
-      const totalMin = mm + ss / 60;
-      const percentMin = (totalMin / 60) * 100;
-      progressMin.style.width = `${percentMin}%`;
-      lastSecond = ss;
-    }
-
-    timeDisplay.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-          console.warn(`全画面モードの切り替えに失敗しました: ${err.message}`);
+      // 分が変わった時に音を鳴らす（時報が有効な場合のみ）
+      if (mm !== lastMinute && isSoundEnabled) {
+        minuteSound.currentTime = 0;
+        minuteSound.play().catch(err => {
+          console.warn('音声の再生に失敗しました:', err);
         });
-      } else {
-        document.exitFullscreen();
+        lastMinute = mm;
+      } else if (mm !== lastMinute) {
+        lastMinute = mm;
       }
-    });
-
-    logo.addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
-      isLightMode = !isLightMode;
-      logo.src = isLightMode ? 'lightmode.png' : 'darkmode.png';
-      updateLizLogo();
-    });
-
-    function updateLizLogo() {
-      const isLight = document.body.classList.contains('light-mode');
-      const lizLogos = document.querySelectorAll('#lizLogo, #lizLogoMobile');
-      lizLogos.forEach(el => {
-        el.src = isLight ? 'logo_light.png' : 'logo_dark.png';
-      });
-    }
-    logo.addEventListener('click', updateLizLogo);
-
-    //  ------------------------
-    adjustFontSize();
-    updateClock();
-    setInterval(updateClock, 20);
-    updateLizLogo();
-    //  ------------------------
-
-    function getDayString(day) {
-      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      return days[day];
-    }
-
-    function updateClock() {
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = now.getMinutes();
-      const ss = now.getSeconds();
-      const ms = now.getMilliseconds();
 
       const yyyy = now.getFullYear();
       const MM = String(now.getMonth() + 1).padStart(2, '0');
@@ -266,6 +270,89 @@
       if (timeDisplay) {
         dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
       }
+    }
+
+    timeDisplay.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn(`全画面モードの切り替えに失敗しました: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // 設定の保存
+    function saveSettings() {
+      localStorage.setItem('isLightMode', isLightMode);
+      localStorage.setItem('isSoundEnabled', isSoundEnabled);
+    }
+
+    // 設定の読み込み
+    function loadSettings() {
+      // ダークモード設定の読み込み
+      const savedLightMode = localStorage.getItem('isLightMode');
+      if (savedLightMode !== null) {
+        isLightMode = savedLightMode === 'true';
+        if (isLightMode) {
+          document.body.classList.add('light-mode');
+          logo.src = 'lightmode.png';
+        }
+      }
+
+      // 時報設定の読み込み
+      const savedSoundEnabled = localStorage.getItem('isSoundEnabled');
+      if (savedSoundEnabled !== null) {
+        isSoundEnabled = savedSoundEnabled === 'true';
+        soundToggle.src = isSoundEnabled ? 
+          (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
+          (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
+      }
+
+      updateLizLogo();
+    }
+
+    // 初期設定の読み込み
+    loadSettings();
+
+    soundToggle.addEventListener('click', () => {
+      isSoundEnabled = !isSoundEnabled;
+      soundToggle.src = isSoundEnabled ? 
+        (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
+        (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
+      saveSettings();
+    });
+
+    logo.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      isLightMode = !isLightMode;
+      logo.src = isLightMode ? 'lightmode.png' : 'darkmode.png';
+      soundToggle.src = isSoundEnabled ? 
+        (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
+        (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
+      updateLizLogo();
+      saveSettings();
+    });
+
+    function updateLizLogo() {
+      const isLight = document.body.classList.contains('light-mode');
+      const lizLogos = document.querySelectorAll('#lizLogo, #lizLogoMobile');
+      lizLogos.forEach(el => {
+        el.src = isLight ? 'logo_light.png' : 'logo_dark.png';
+      });
+    }
+    logo.addEventListener('click', updateLizLogo);
+
+    //  ------------------------
+    adjustFontSize();
+    updateClock();
+    setInterval(updateClock, 20);
+    updateLizLogo();
+    //  ------------------------
+
+    function getDayString(day) {
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      return days[day];
     }
   </script>
 </body>
