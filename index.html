@@ -194,16 +194,36 @@
       const ss = now.getSeconds();
       const ms = now.getMilliseconds();
 
+      const yyyy = now.getFullYear();
+      const MM = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const day = getDayString(now.getDay());
+      const dateDisplay = document.getElementById('dateDisplay');
+      const timeDisplay = document.getElementById('timeDisplay');
+      dateDisplay.textContent = `${yyyy}/${MM}/${dd}(${day})`;
+
       timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
 
+      // 秒のプログレスバーの更新
       const totalSec = ss + ms / 1000;
-      const percentSec = (totalSec / 60) * 100;
+      let percentSec;
+      if (ss === 0 && ms < 1000) {
+        // 0秒の最初の1秒間は左から右へ移動
+        percentSec = (ms / 1000) * 100;
+      } else {
+        // それ以外は右から左へ移動
+        percentSec = 100 - ((totalSec / 60) * 100);
+      }
       progressSec.style.width = `${percentSec}%`;
 
       const totalMin = mm + ss / 60;
       const percentMin = (totalMin / 60) * 100;
       progressMin.style.width = `${percentMin}%`;
       lastSecond = ss;
+
+      if (timeDisplay) {
+        dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
+      }
     }
 
     timeDisplay.addEventListener('click', () => {
@@ -242,37 +262,6 @@
     function getDayString(day) {
       const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       return days[day];
-    }
-
-    function updateClock() {
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = now.getMinutes();
-      const ss = now.getSeconds();
-      const ms = now.getMilliseconds();
-
-      const yyyy = now.getFullYear();
-      const MM = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      const day = getDayString(now.getDay());
-      const dateDisplay = document.getElementById('dateDisplay');
-      const timeDisplay = document.getElementById('timeDisplay');
-      dateDisplay.textContent = `${yyyy}/${MM}/${dd}(${day})`;
-
-      timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
-
-      const totalSec = ss + ms / 1000;
-      const percentSec = (totalSec / 60) * 100;
-      progressSec.style.width = `${percentSec}%`;
-
-      const totalMin = mm + ss / 60;
-      const percentMin = (totalMin / 60) * 100;
-      progressMin.style.width = `${percentMin}%`;
-      lastSecond = ss;
-
-      if (timeDisplay) {
-        dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
-      }
     }
   </script>
 </body>
