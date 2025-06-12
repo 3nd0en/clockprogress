@@ -68,32 +68,66 @@
       background: var(--bar-fill-min);
     }
 
-    #logo {
+    .button-group {
       position: absolute;
       top: calc(100vw / 40);
       right: calc(100vw / 40);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 500;
+    }
+
+    #logo {
       height: calc(100vw / 18);
       width: auto;
       max-height: 80px;
       cursor: pointer;
-      z-index: 500;
     }
 
-    @media screen and (max-width: 768px) and (orientation: portrait) { /* 縦 */
-      #logo {
+    #soundToggle {
+      height: 73px;
+      width: 73px;
+      max-height: 73px;
+      max-width: 73px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      object-fit: contain;
+      margin-left: 5px;
+    }
+
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      .button-group {
         top: calc(100vw / 10);
         right: calc(100vw / 15);
+      }
+      #logo {
         height: calc(100vw / 9);
         max-height: 80px;
       }
+      #soundToggle {
+        height: 73px;
+        width: 73px;
+        max-height: 73px;
+        max-width: 73px;
+      }
     }
 
-    @media screen and (max-width: 768px) and (orientation: landscape) { /* 横 */
-      #logo {
+    @media screen and (max-width: 768px) and (orientation: landscape) {
+      .button-group {
         top: calc(100vw / 20);
         right: calc(100vw / 40);
+      }
+      #logo {
         height: calc(100vw / 15);
         max-height: 80px;
+      }
+      #soundToggle {
+        height: 73px;
+        width: 73px;
+        max-height: 73px;
+        max-width: 73px;
       }
     }
 
@@ -136,7 +170,10 @@
     <div class="progress min" id="progressMin"></div>
   </div>
 
-  <img id="logo" src="darkmode.png" alt="ロゴ" title="テーマ切り替え" />
+  <div class="button-group">
+    <img id="logo" src="darkmode.png" alt="ロゴ" title="テーマ切り替え" />
+    <img id="soundToggle" src="sound_on.png" alt="時報切り替え" title="時報のオン・オフ" />
+  </div>
 
   <center>
     <div id="beta" style="position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); color: var(--text-color); z-index: 1000;">
@@ -186,9 +223,11 @@
     const progressSec = document.getElementById('progressSec');
     const progressMin = document.getElementById('progressMin');
     const logo = document.getElementById('logo');
+    const soundToggle = document.getElementById('soundToggle');
     let lastSecond = new Date().getSeconds();
     let lastMinute = new Date().getMinutes();
     let isLightMode = false;
+    let isSoundEnabled = true;
     const minuteSound = document.getElementById('minuteSound');
 
     function updateClock() {
@@ -198,12 +237,14 @@
       const ss = now.getSeconds();
       const ms = now.getMilliseconds();
 
-      // 分が変わった時に音を鳴らす
-      if (mm !== lastMinute) {
-        minuteSound.currentTime = 0; // 音声を最初から再生
+      // 分が変わった時に音を鳴らす（時報が有効な場合のみ）
+      if (mm !== lastMinute && isSoundEnabled) {
+        minuteSound.currentTime = 0;
         minuteSound.play().catch(err => {
           console.warn('音声の再生に失敗しました:', err);
         });
+        lastMinute = mm;
+      } else if (mm !== lastMinute) {
         lastMinute = mm;
       }
 
@@ -241,11 +282,56 @@
       }
     });
 
+    // 設定の保存
+    function saveSettings() {
+      localStorage.setItem('isLightMode', isLightMode);
+      localStorage.setItem('isSoundEnabled', isSoundEnabled);
+    }
+
+    // 設定の読み込み
+    function loadSettings() {
+      // ダークモード設定の読み込み
+      const savedLightMode = localStorage.getItem('isLightMode');
+      if (savedLightMode !== null) {
+        isLightMode = savedLightMode === 'true';
+        if (isLightMode) {
+          document.body.classList.add('light-mode');
+          logo.src = 'lightmode.png';
+        }
+      }
+
+      // 時報設定の読み込み
+      const savedSoundEnabled = localStorage.getItem('isSoundEnabled');
+      if (savedSoundEnabled !== null) {
+        isSoundEnabled = savedSoundEnabled === 'true';
+        soundToggle.src = isSoundEnabled ? 
+          (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
+          (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
+      }
+
+      updateLizLogo();
+    }
+
+    // 初期設定の読み込み
+    loadSettings();
+
+    soundToggle.addEventListener('click', () => {
+      isSoundEnabled = !isSoundEnabled;
+      soundToggle.src = isSoundEnabled ? 
+        (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
+        (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
+      saveSettings();
+    });
+
     logo.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
       isLightMode = !isLightMode;
       logo.src = isLightMode ? 'lightmode.png' : 'darkmode.png';
+      soundToggle.src = isSoundEnabled ? 
+        (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
+        (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
       updateLizLogo();
+      saveSettings();
     });
 
     function updateLizLogo() {
