@@ -123,6 +123,9 @@
 </head>
 
 <body>
+  <audio id="minuteSound" preload="auto">
+    <source src="minute.mp3" type="audio/mpeg">
+  </audio>
   <div id="dateDisplay" style="font-family: 'JetBrains Mono', monospace; margin-bottom: 5px;"></div>
   <div class="time-display" id="timeDisplay" title="全画面モード切り替え">00:00:00</div>
 
@@ -185,7 +188,9 @@
     const progressMin = document.getElementById('progressMin');
     const logo = document.getElementById('logo');
     let lastSecond = new Date().getSeconds();
+    let lastMinute = new Date().getMinutes();
     let isLightMode = false;
+    const minuteSound = document.getElementById('minuteSound');
 
     function updateClock() {
       const now = new Date();
@@ -193,6 +198,23 @@
       const mm = now.getMinutes();
       const ss = now.getSeconds();
       const ms = now.getMilliseconds();
+
+      // 分が変わった時に音を鳴らす
+      if (mm !== lastMinute) {
+        minuteSound.currentTime = 0; // 音声を最初から再生
+        minuteSound.play().catch(err => {
+          console.warn('音声の再生に失敗しました:', err);
+        });
+        lastMinute = mm;
+      }
+
+      const yyyy = now.getFullYear();
+      const MM = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const day = getDayString(now.getDay());
+      const dateDisplay = document.getElementById('dateDisplay');
+      const timeDisplay = document.getElementById('timeDisplay');
+      dateDisplay.textContent = `${yyyy}/${MM}/${dd}(${day})`;
 
       timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
 
@@ -204,6 +226,10 @@
       const percentMin = (totalMin / 60) * 100;
       progressMin.style.width = `${percentMin}%`;
       lastSecond = ss;
+
+      if (timeDisplay) {
+        dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
+      }
     }
 
     timeDisplay.addEventListener('click', () => {
@@ -242,37 +268,6 @@
     function getDayString(day) {
       const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       return days[day];
-    }
-
-    function updateClock() {
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = now.getMinutes();
-      const ss = now.getSeconds();
-      const ms = now.getMilliseconds();
-
-      const yyyy = now.getFullYear();
-      const MM = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      const day = getDayString(now.getDay());
-      const dateDisplay = document.getElementById('dateDisplay');
-      const timeDisplay = document.getElementById('timeDisplay');
-      dateDisplay.textContent = `${yyyy}/${MM}/${dd}(${day})`;
-
-      timeDisplay.textContent = `${hh}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2, '0')}`;
-
-      const totalSec = ss + ms / 1000;
-      const percentSec = (totalSec / 60) * 100;
-      progressSec.style.width = `${percentSec}%`;
-
-      const totalMin = mm + ss / 60;
-      const percentMin = (totalMin / 60) * 100;
-      progressMin.style.width = `${percentMin}%`;
-      lastSecond = ss;
-
-      if (timeDisplay) {
-        dateDisplay.style.fontSize = (parseFloat(window.getComputedStyle(timeDisplay).fontSize) / 4) + 'px';
-      }
     }
   </script>
 </body>
