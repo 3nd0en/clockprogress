@@ -17,5 +17,6 @@ HTMLファイルを開くことで利用できる<br>
 一分経過する事に音で知らせる
 
 # ライセンス情報
-このプログラムはMIT LICENSEの下で公開されている。
-例外として、logo_dark.png, logo_light.pngの転載・加工は原則禁止。著作権は遠藤円に帰属する
+このプログラムはMIT LICENSEの下で公開されている。<br>
+例外として、logo_dark.png, logo_light.pngの転載・加工は原則禁止。この2つのファイルとソースコードの著作権は遠藤円に帰属する<br>
+sound_on.png / sound_off.png / sound_on_light.png / sound_off_light.pngは<a href="https://kotonohaworks.com/free-icons/onryou/" target="_blank" rel="noopener">https://kotonohaworks.com/free-icons/onryou/</a>のものを加工した
