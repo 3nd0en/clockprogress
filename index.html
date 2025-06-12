@@ -297,12 +297,16 @@
       const savedSoundEnabled = localStorage.getItem('isSoundEnabled');
       if (savedSoundEnabled !== null) {
         isSoundEnabled = savedSoundEnabled === 'true';
-        soundToggle.src = isSoundEnabled ? 
-          (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
-          (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
       }
-
+      updateSoundToggleIcon();
       updateLizLogo();
+    }
+
+    // サウンドトグルアイコンの更新を一元管理
+    function updateSoundToggleIcon() {
+      soundToggle.src = isSoundEnabled ? 
+        (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
+        (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
     }
 
     // 初期設定の読み込み
@@ -310,9 +314,7 @@
 
     soundToggle.addEventListener('click', () => {
       isSoundEnabled = !isSoundEnabled;
-      soundToggle.src = isSoundEnabled ? 
-        (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
-        (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
+      updateSoundToggleIcon();
       saveSettings();
     });
 
@@ -320,9 +322,7 @@
       document.body.classList.toggle('light-mode');
       isLightMode = !isLightMode;
       logo.src = isLightMode ? 'lightmode.png' : 'darkmode.png';
-      soundToggle.src = isSoundEnabled ? 
-        (isLightMode ? 'sound_on_light.png' : 'sound_on.png') : 
-        (isLightMode ? 'sound_off_light.png' : 'sound_off.png');
+      updateSoundToggleIcon();
       updateLizLogo();
       saveSettings();
     });
